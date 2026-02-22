@@ -8,6 +8,7 @@ import { BASE_URL } from "../utils/constants";
 const Login = () => {
     const[emailId,setEmailId]=useState("rohit@gmail.com");
     const[password,setPassword]=useState("Rohit@123");
+    const[error, setError]=useState("")
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -21,6 +22,7 @@ const Login = () => {
          navigate("/")
 
        }catch(err){
+        setError(err?.response?.data || "Something went wrong");
         console.log("Error while logging in",err);
        }
     }
@@ -41,7 +43,7 @@ const Login = () => {
               <legend className="fieldset-legend">Password</legend>
               <input type="text" className="input" value={password} onChange={(e)=>setPassword(e.target.value)}/>
             </fieldset>
-
+            {error && <p className="text-red-500">{error}</p>}
             <div className="card-actions justify-end">
               <button className="btn btn-primary" onClick={handleLogin}>Log In</button>
             </div>
