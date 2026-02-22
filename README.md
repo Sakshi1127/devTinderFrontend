@@ -8,3 +8,6 @@
 - Create a NavBar components file
 - Install raect router dom
 - Create the router , childer routes ,outlet
+- Create a login Page
+- Install axios integrate login API 
+- Insall CORS in banckend make white list the IP 
