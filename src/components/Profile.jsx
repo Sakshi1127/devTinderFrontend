@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserCard from "./UserCard";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
@@ -9,16 +9,26 @@ const Profile = () => {
   const user = useSelector((store) => store?.user);
   const dispatch = useDispatch();
 
-  const [firstName, setFirstName] = useState(user.firstName || "");
-  const [lastName, setLastName] = useState(user.lastName || "");
-  const [photoUrl, setphotoUrl] = useState(user.photoUrl || "");
-  const [age, setAge] = useState(user.age || "");
-  const [gender, setGender] = useState(user.gender || "");
-  const [about, setAbout] = useState(user.about || "");
-  const [skills, setSkills] = useState(user.skills || []);
+  const [firstName, setFirstName] = useState(user?.firstName || "");
+  const [lastName, setLastName] = useState(user?.lastName || "");
+  const [photoUrl, setphotoUrl] = useState(user?.photoUrl || "");
+  const [age, setAge] = useState(user?.age || "");
+  const [gender, setGender] = useState(user?.gender || "");
+  const [about, setAbout] = useState(user?.about || "");
+  const [skills, setSkills] = useState(user?.skills || []);
   const [skillInput, setSkillInput] = useState("");
   const [error, setError] = useState("");
   const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    setFirstName(user?.firstName || "");
+    setLastName(user?.lastName || "");
+    setphotoUrl(user?.photoUrl || "");
+    setAge(user?.age || "");
+    setGender(user?.gender || "");
+    setAbout(user?.about || "");
+    setSkills(user?.skills || []);
+  }, [user]);
 
   const handleSaveProfile = async () => {
     setError("")
@@ -120,7 +130,7 @@ const Profile = () => {
                   <option value="">Select Gender</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
-                  <option value="other">Other</option>
+                  <option value="o ther">Other</option>
                 </select>
               </fieldset>
 

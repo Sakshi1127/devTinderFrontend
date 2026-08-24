@@ -19,7 +19,6 @@ const Body = () => {
     try{
        const res = await axios.get(BASE_URL + "/profile/view",{withCredentials:true})
        dispatch(addUser(res.data));
-       navigate("/")
     }catch(error){
       if(error.response && error.response.status === 401){
         // If the error is due to unauthorized access, navigate to login page

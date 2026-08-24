@@ -7,13 +7,11 @@ import { addConnections } from "../utils/connectionsSlice";
 const Connections = () => {
   const dispatch = useDispatch();
   const connections = useSelector((state) => state.connections);
-  console.log("aaaaaaaaaaaaa", connections);
   const fetchConnection = async () => {
     try {
       const res = await axios.get(BASE_URL + "/user/connections", {
         withCredentials: true,
       });
-      console.log(res.data.data);
       dispatch(addConnections(res.data.data));
     } catch (err) {
       console.log(err);
@@ -43,7 +41,7 @@ const Connections = () => {
               <li className="list-row">
                 <div>
                   <img
-                    className="size-10 rounded-box"
+                    className="w-20 h-20 rounded-full"
                     src={connection.photoUrl}
                   />
                 </div>
@@ -52,10 +50,10 @@ const Connections = () => {
                   <div className="text-xs uppercase font-semibold opacity-60">
                     {connection.age && connection.gender && connection.age + ", " + connection.gender}
                   </div>
-                </div>
-                <p className="list-col-wrap text-xs">
+                    <p className="list-col-wrap text-m mt-3">
                  {connection.about}
                 </p>
+                </div>
               </li>
             </ul>
           </div>
