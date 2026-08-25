@@ -6,8 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
-    const[emailId,setEmailId]=useState("rohit@gmail.com");
-    const[password,setPassword]=useState("Rohit@123");
+    const[firstName,setFirstName]=useState("")
+    const [lastName,setLastName]= useState("")
+    const[emailId,setEmailId]=useState("");
+    const[password,setPassword]=useState("");
+    const [isloginForm,setIsLoginForm]= useState(true)
     const[error, setError]=useState("")
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -18,9 +21,25 @@ const Login = () => {
             emailId,
             password
          },{withCredentials:true});
-         dispatch(addUser(res.data));
+         dispatch(addUser(res.data?.data ?? res.data));
          navigate("/")
 
+       }catch(err){
+        setError(err?.response?.data || "Something went wrong");
+        console.log("Error while logging in",err);
+       }
+    }
+
+     const handleSignup = async ()=>{
+       try{
+         const res= await axios.post(BASE_URL + "/signup",{
+            firstName,
+            lastName,
+            emailId,
+            password
+         },{withCredentials:true});
+         dispatch(addUser(res.data?.data ?? res.data));
+         navigate("/profile")
        }catch(err){
         setError(err?.response?.data || "Something went wrong");
         console.log("Error while logging in",err);
@@ -32,7 +51,22 @@ const Login = () => {
       <div className="flex items-center justify-center my-40">
         <div className="card card-dash bg-base-200 w-96 ">
           <div className="card-body flex items-center justify-center">
-            <h2 className="card-title ">Login</h2>
+
+            <h2 className="card-title "> {isloginForm ? "Log In" : "Sign Up"}</h2>
+
+             {!isloginForm &&(
+              <>
+             <fieldset className="fieldset w-3/4">
+              <legend className="fieldset-legend">First Name</legend>
+              <input type="text" className="input" value={firstName} onChange={(e)=>setFirstName(e.target.value)}/>
+            </fieldset>
+
+             <fieldset className="fieldset w-3/4">
+              <legend className="fieldset-legend">Last Name</legend>
+              <input type="text" className="input" value={lastName} onChange={(e)=>setLastName(e.target.value)}/>
+            </fieldset>
+            </>)
+            }
 
             <fieldset className="fieldset w-3/4">
               <legend className="fieldset-legend">Email Id</legend>
@@ -45,8 +79,12 @@ const Login = () => {
             </fieldset>
             {error && <p className="text-red-500">{error}</p>}
             <div className="card-actions justify-end">
-              <button className="btn btn-primary" onClick={handleLogin}>Log In</button>
+              <button className="btn btn-primary" onClick={isloginForm? handleLogin : handleSignup}>{isloginForm ? "Log In" : "Sign Up"}</button>
             </div>
+
+              <p className="mx-2 text-primary underline cursor-pointer" onClick={() => setIsLoginForm((value) => !value)}>{isloginForm ? " New User? Signup here" : " Existing User? Login here"}
+              </p>
+
           </div>
         </div>
       </div>

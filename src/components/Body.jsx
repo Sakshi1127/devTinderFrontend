@@ -18,7 +18,7 @@ const Body = () => {
     if(user) return; // If user data is already present in the store, no need to fetch again
     try{
        const res = await axios.get(BASE_URL + "/profile/view",{withCredentials:true})
-       dispatch(addUser(res.data));
+      dispatch(addUser(res.data?.data ?? res.data));
     }catch(error){
       if(error.response && error.response.status === 401){
         // If the error is due to unauthorized access, navigate to login page
